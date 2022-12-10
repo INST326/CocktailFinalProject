@@ -121,7 +121,9 @@ class Cocktail:
         Returns:
             float: The total cost
         """    
-        pass  
+        return sum(i.price for i in self.ingredients)
+ 
+
     
     def flavors(self):
         """Returns the flavors of the cocktails.
