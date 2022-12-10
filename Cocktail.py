@@ -149,14 +149,20 @@ class Bar:
        #Bohan add with statement here
        
        if "cocktails" in filepath:
-           regex = r"(?P<Name>[^,]+),[\"](?P<Ingredients>[^\"]+)[\"],(?P<Strength>[\d.]+)"
-           match = re.search(regex, line)
-           name = match.group("Name")
-           ingredients = match.group("Ingredients")
-           strength = match.group("Strength")
-           ingredients_split = ingredients.split(",")
-           ingr_list = [self.ingr[ingr_iter] for ingr_iter in ingredients_split]
-           self.cocktails[name] = Cocktail(name, ingr_list, float(int(strength) * 0.01))
+        regex = r"(?P<Name>[^,]+),[\"](?P<Ingredients>[^\"]+)[\"],(?P<Strength>[\d.]+)"
+        match = re.search(regex, line)
+        name = match.group("Name")
+        ingredients = match.group("Ingredients")
+        strength = match.group("Strength")
+        ingredients_split = ingredients.split(",")
+        ingr_list = [self.ingr[ingr_iter] for ingr_iter in ingredients_split]
+        self.cocktails[name] = Cocktail(name, ingr_list, float(int(strength) * 0.01))
+        
+       elif "ingredients" in filepath:
+        regex = r"(?P<Name>[^,]+),(?P<Price>[\d.]+),(?P<Flavor>[a-zA-Z]+)"
+        match = re.search(regex, line)
+        name, price, flavor = match.groups()
+        self.ingr[name] = Ingredient(name, int(price), flavor)
                                           
    def order(self, order):
        """ Creates an order of the cocktails served.
