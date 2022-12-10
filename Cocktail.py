@@ -316,3 +316,7 @@ def main(cocktails_filepth, ingredients_filepth, bar_name):
     new_bar.load_data(ingredients_filepth)
     new_bar.load_data(cocktails_filepth)
     handle_dialogue(new_bar)
+
+if __name__ == "__main__":
+    args = parse_args(sys.argv[1:])
+    main(args.cocktails_filepth, args.ingredients_filepth, args.bar_name)
