@@ -285,7 +285,7 @@ def handle_dialogue(bar):
             bar.create_cocktail(cocktail_name, ingrs)
             print(f"Your cocktail has been added to the menu!")
  
- def parse_args(arglist):
+def parse_args(arglist):
    """ Parse command-line arguments.
   
    Expect two mandatory arguments:
@@ -305,3 +305,14 @@ def handle_dialogue(bar):
    parser.add_argument("bar_name", help="name of the bar")
    return parser.parse_args(arglist)
 
+def main(cocktails_filepth, ingredients_filepth, bar_name):
+    """ Load data from csv into bar class using filepaths
+    
+    Args:
+        cocktails_filepth (str): string location of the cocktails.csv
+        ingredients_filepth (str): string location of the ingredients.csv
+    """    
+    new_bar = Bar(bar_name)
+    new_bar.load_data(ingredients_filepth)
+    new_bar.load_data(cocktails_filepth)
+    handle_dialogue(new_bar)
