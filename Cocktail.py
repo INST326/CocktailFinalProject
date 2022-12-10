@@ -198,3 +198,15 @@ class Bar:
         """
         pass
 
+def handle_dialogue(bar):
+    """Handle the input dialogue for user to interact with Bar object
+
+    Args:
+        bar (Bar): a Bar object that we are ordering from
+        
+    Side effects:
+        Printing to stout
+    """
+    
+    while (True):
+        #Nick starts dialogue
