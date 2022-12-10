@@ -1,4 +1,44 @@
 import re
+import pandas as pd
+import seaborn as sns
+
+class DataAnalysis:
+    def __init__(self, cocktails_file, ingredients_file):
+        self.cocktails = pd.read_csv(cocktails_file)# reads the csv
+        self.ingredients = pd.read_csv(ingredients_file)# reads the csv
+
+    def menu(self):
+        self.cocktails.columns = ["Drink_name", "Ingredients", "Price"]# renamed the 3 columns
+        self.cocktails.loc[-1] = ['Old Fashioned','whiskey,angostura bitters,water,simple syrup','29']# adds the row I had to replace
+        change_to_num = self.cocktails.loc[:, "Price"]## separated to be able to change the rows to ints
+        change_to_num = change_to_num.apply(pd.to_numeric, errors='coerce')## changed rows to ints
+        self.cocktails.loc[:,"Price"] = change_to_num ## replaced the values
+        cocktails_and_price = self.cocktails.loc[:, ['Drink_name', 'Price']].sort_values('Price', ascending=False)# decending
+        print(cocktails_and_price)
+        
+    def amount_of_ingredients(self):
+        self.ingredients = pd.read_csv("ingredients.csv")
+        self.ingredients.columns = ["Ingredient", "Price", "Type"]# renamed the top columns
+        self.ingredients.loc[-1] =  ['whiskey',4,'smokey']# added the one I renamed back
+        type_and_amount = self.ingredients.value_counts("Type").to_frame("Amount").reset_index(0)# I counted the type of ingredients and added them to amount and reordered the numbers
+        print(type_and_amount)
+        
+    def top_shelf_drinks(self): 
+        top_shelf = self.cocktails.nlargest(5, 'Price')
+        print(top_shelf)    
+        
+    def bottom_shelf_drinks(self): 
+        bottom_shelf = self.cocktails.nsmallest(5,"Price")
+        bottom_shelf
+        
+    def flavor_graph(self):
+        type_and_amount = self.ingredients.value_counts("Type").to_frame("Amount").reset_index(0)# I counted the type of ingredients and added them to amount and reordered the numbers
+        sns.set_palette([ "black", "#34495e"])# changed the style of seaborn to look better
+        type_and_amount.plot(kind='bar', x='Type', y='Amount')# made the bar plot  
+    def cocktail_graph(self):
+        cocktails_and_price = self.cocktails.loc[:, ['Drink_name', 'Price']].sort_values('Price', ascending=False)# decending
+        cocktails_and_price.plot(kind='bar', x='Drink_name', y='Price')
+
 class Ingredient:
     """ A class that sets the name, price, and flavor of the ingredients.
   
@@ -119,7 +159,7 @@ class Bar:
             tab(): Returns current total price
             __str__ (): magic method that returns informal rep of bar
             __repr__(): magic method that returns formal rep of bar
-    """   
+    """
     def __init__(self, name) -> None:
         """Initializes the Bar class.
             Attributes:
