@@ -3,12 +3,28 @@ import pandas as pd
 import seaborn as sns
 
 class DataAnalysis:
-    
+    """ A class that that gives us data analysis from our cocktail and ingredient files.
+  
+       Attributes:
+           cocktails_file (pandas dataframe): csv file of the cocktails dataframe
+           cocktails_file (pandas dataframe): csv file of the ingredients dataframe
+    """ 
     def __init__(self, cocktails_file, ingredients_file):
+        """Initializes the DataAnalysis class.
+ 
+        Args:
+           cocktails_file (pandas dataframe): csv file of the cocktails dataframe
+           cocktails_file (pandas dataframe): csv file of the ingredients dataframe
+        """
         self.cocktails = pd.read_csv(cocktails_file)# reads the csv
         self.ingredients = pd.read_csv(ingredients_file)# reads the csv
 
     def menu(self):
+        """This method organizes and displays a menu of cocktails and their prices.
+        
+        
+        
+        """
         self.cocktails.columns = ["Drink_name", "Ingredients", "Price"]# renamed the 3 columns
         self.cocktails.loc[-1] = ['Old Fashioned','whiskey,angostura bitters,water,simple syrup','29']# adds the row I had to replace
         change_to_num = self.cocktails.loc[:, "Price"]## separated to be able to change the rows to ints
