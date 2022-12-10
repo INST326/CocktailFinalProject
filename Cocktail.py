@@ -81,7 +81,12 @@ class Cocktail:
     """
  
     def __init__(self, name, ingredients, strength=None) -> None:
-        pass
+        self.name = name
+        self.ingredients = ingredients
+        self.strength = strength
+ 
+
+
     
     def __add__(self, other):
         """ Returns new cocktail with ingredients in both.
