@@ -83,7 +83,9 @@ class Cocktail:
         Returns:
             str: Returns the objects of the cocktails.
         """    
-        pass  
+        
+        return f"Cocktail(${self.name!r})"
+  
     
     def __lt__(self, other):
         """Check less than for sorting
