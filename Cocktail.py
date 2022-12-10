@@ -210,3 +210,10 @@ def handle_dialogue(bar):
     
     while (True):
         #Nick starts dialogue
+        action = input(f"Welcome to {bar.name}. What can I do for you? \n 1: Order a cocktail \n 2: Recommend cocktails \n 3: Create a cocktail\n")
+ 
+ 
+ 
+ 
+ 
+
