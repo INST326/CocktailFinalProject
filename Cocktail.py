@@ -100,10 +100,7 @@ class Cocktail:
         self.name = name
         self.ingredients = ingredients
         self.strength = strength
- 
-
-
-    
+  
     def __add__(self, other):
         """ Returns new cocktail with ingredients in both.
             other(Cocktail): other cocktail to be combined with self.
@@ -113,8 +110,7 @@ class Cocktail:
         
         return Cocktail(f"{self.name} x {other.name}", 
         self.ingredients.union(other.ingredients))
- 
- 
+  
         
     def price(self) -> float:
         """Returns the price of the cocktail.
@@ -122,8 +118,6 @@ class Cocktail:
             float: The total cost
         """    
         return sum(i.price for i in self.ingredients)
- 
-
     
     def flavors(self):
         """Returns the flavors of the cocktails.
@@ -137,7 +131,7 @@ class Cocktail:
         Returns:
             set: the ingredients names of the cocktails.
         """  
-        return {i.name for i in self.ingredients}    
+        pass    
     
     def __str__(self) -> str:
         """Returns the string representation of the cocktails.
