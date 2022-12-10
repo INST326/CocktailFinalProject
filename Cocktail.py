@@ -46,7 +46,11 @@ class Cocktail:
             Returns:
                 Cocktail: new cocktail with ingredients of combined.
         """
-        pass
+        
+        return Cocktail(f"{self.name} x {other.name}", 
+        self.ingredients.union(other.ingredients))
+ 
+ 
         
     def price(self) -> float:
         """Returns the price of the cocktail.
