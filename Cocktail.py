@@ -279,5 +279,23 @@ def handle_dialogue(bar):
             bar.create_cocktail(cocktail_name, ingrs)
             print(f"Your cocktail has been added to the menu!")
  
- 
+ def parse_args(arglist):
+   """ Parse command-line arguments.
+  
+   Expect two mandatory arguments:
+       - ingredients_filepth: a path to a file containing ingredients data
+       - cocktails_filepth: a path to a file containing cocktails data
+       - bar_name: name of the bar
+      
+   Args:
+       arglist (list of str): arguments from the command line.
+  
+   Returns:
+       namespace: the parsed arguments, as a namespace.
+   """
+   parser = ArgumentParser()
+   parser.add_argument("ingredients_filepth", help="path to ingredients file")
+   parser.add_argument("cocktails_filepth", help="path to cocktails file")
+   parser.add_argument("bar_name", help="name of the bar")
+   return parser.parse_args(arglist)
 
