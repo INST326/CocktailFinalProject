@@ -1,3 +1,4 @@
+import re
 class Ingredient:
    """ A class that sets the name, price, and flavor of the ingredients.
   
@@ -144,6 +145,18 @@ class Bar:
            Side effect:
                Adds ingredients to self.ingr
        """
+       
+       #Bohan add with statement here
+       
+       if "cocktails" in filepath:
+           regex = r"(?P<Name>[^,]+),[\"](?P<Ingredients>[^\"]+)[\"],(?P<Strength>[\d.]+)"
+           match = re.search(regex, line)
+           name = match.group("Name")
+           ingredients = match.group("Ingredients")
+           strength = match.group("Strength")
+           ingredients_split = ingredients.split(",")
+           ingr_list = [self.ingr[ingr_iter] for ingr_iter in ingredients_split]
+           self.cocktails[name] = Cocktail(name, ingr_list, float(int(strength) * 0.01))
                                           
    def order(self, order):
        """ Creates an order of the cocktails served.
