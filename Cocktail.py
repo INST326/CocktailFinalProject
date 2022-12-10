@@ -253,9 +253,31 @@ def handle_dialogue(bar):
     while (True):
         #Nick starts dialogue
         action = input(f"Welcome to {bar.name}. What can I do for you? \n 1: Order a cocktail \n 2: Recommend cocktails \n 3: Create a cocktail\n")
- 
- 
- 
+        
+        if int(action) == 1:
+            sorted_cocktails = {k: v for k, v in sorted(bar.cocktails.items(), key=lambda item: item[1])}
+            cocktail_list = [ f"{index}: {str(cocktail)}" for (index, cocktail) in enumerate(sorted_cocktails.values()) ]
+            order_number = input(f"Great! Here's a list of our cocktails. \n {cocktail_list} \n")
+            bar.order(list(sorted_cocktails.keys())[int(order_number)])
+            orders_joined = ",".join([order.name for order in bar.myorder])
+            print(f"Excellent choice! Here are your orders: {orders_joined} \nYour total is: ${bar.tab()}")
+            
+        elif int(action) == 2:
+            flavor_list = [ f"{index}: {flavor}" for (index, flavor) in enumerate(bar.get_flavors()) ]
+            flavor_input = input(f"What flavor would you like. {flavor_list} \n")
+            recommended = bar.recommend_cocktails(bar.get_flavors()[int(flavor_input)])
+            recommended_text = ", ".join([rec.name for rec in recommended])
+            print(f"Here's what we found: {recommended_text} \n")
+        
+        elif int(action) == 3:
+            ingr_list = [ f"{index}: {ingr.name}" for (index, ingr) in enumerate(bar.ingr.values()) ]
+            cocktail_name = input("What should we name your cocktail? \n")
+            print(f"Now lets add some ingredients. Here's what we have. \n{ingr_list}")
+            selected_ingrs = input("Use the following format: 1,5,4 \n")
+            selected_ingrs = selected_ingrs.split(",")
+            ingrs = [list(bar.ingr.values())[int(index)] for index in selected_ingrs]
+            bar.create_cocktail(cocktail_name, ingrs)
+            print(f"Your cocktail has been added to the menu!")
  
  
 
