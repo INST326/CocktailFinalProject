@@ -73,8 +73,10 @@ class Cocktail:
         """Returns the string representation of the cocktails.
         Returns:
             str: String of the cocktails.
-        """       
-        pass
+        """     
+          
+        ingr_txt = ", ".join([ingr.name for ingr in self.ingredients])
+        return f"{self.name} - ${self.price()}"
   
     def __repr__(self) -> str:
         """Returns the object representation of the string format for the cocktails.
