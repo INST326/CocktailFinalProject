@@ -135,7 +135,7 @@ class Cocktail:
         Returns:
             set: the ingredients names of the cocktails.
         """  
-        pass    
+        return {i.name for i in self.ingredients}    
     
     def __str__(self) -> str:
         """Returns the string representation of the cocktails.
