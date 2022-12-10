@@ -1,3 +1,24 @@
+class Ingredient:
+   """ A class that sets the name, price, and flavor of the ingredients.
+  
+       Attributes:
+           name (str): name of ingredient
+           price (float): price of ingredient
+           flavor (str): flavor of ingredient
+   """   
+   def __init__(self, name, price, flavor) -> None:
+       """Initializes the ingredients class.
+ 
+       Args:
+           name (str): Name of the ingredient.
+           price (float): Price of the ingredients.
+           flavor (str): Flavor type of the ingredients.
+       """       
+      
+       self.name = name
+       self.price = price
+       self.flavor = flavor
+
 class Cocktail:
  
    """ A class that allows you to build cocktails with ingredients.
