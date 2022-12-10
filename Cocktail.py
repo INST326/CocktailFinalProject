@@ -1,5 +1,23 @@
 class Cocktail:
-        
+    """ A class that allows you to build cocktails with ingredients.
+
+        Attributes:
+            name (str): ingredients in the bar
+            ingredients (set): The ingredients in the cocktail
+            strength (float): percentage of abv
+
+        Methods:
+
+            price(): returns the total price of the cocktail
+            flavors(): returns set of cocktail flavors
+            ingredients_name(): returns set of cocktail ingredients
+            str (): magic method that returns informal rep of cocktail
+            repr(): megic method that returns formal rep of cocktail
+            add (other): magic method adds two cocktail ingredients
+            sub (other): magic method to get difference
+                             between two cocktails ingredients
+    """
+
     def __init__(self, name, ingredients, strength=None) -> None:
         pass
     
