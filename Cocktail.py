@@ -3,6 +3,7 @@ import pandas as pd
 import seaborn as sns
 
 class DataAnalysis:
+    
     def __init__(self, cocktails_file, ingredients_file):
         self.cocktails = pd.read_csv(cocktails_file)# reads the csv
         self.ingredients = pd.read_csv(ingredients_file)# reads the csv
@@ -29,12 +30,13 @@ class DataAnalysis:
         
     def bottom_shelf_drinks(self): 
         bottom_shelf = self.cocktails.nsmallest(5,"Price")
-        bottom_shelf
+        print(bottom_shelf)
         
     def flavor_graph(self):
         type_and_amount = self.ingredients.value_counts("Type").to_frame("Amount").reset_index(0)# I counted the type of ingredients and added them to amount and reordered the numbers
         sns.set_palette([ "black", "#34495e"])# changed the style of seaborn to look better
-        type_and_amount.plot(kind='bar', x='Type', y='Amount')# made the bar plot  
+        type_and_amount.plot(kind='bar', x='Type', y='Amount')# made the bar plot
+          
     def cocktail_graph(self):
         cocktails_and_price = self.cocktails.loc[:, ['Drink_name', 'Price']].sort_values('Price', ascending=False)# decending
         cocktails_and_price.plot(kind='bar', x='Drink_name', y='Price')
