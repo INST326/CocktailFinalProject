@@ -249,7 +249,8 @@ class Bar:
     
         Returns:
             float: The sum of all the drinks ordered.
-        """       
+        """    
+        return sum(i.price() for i in self.myorder)   
     
     def get_flavors(self):
             pass
