@@ -345,15 +345,17 @@ def handle_dialogue(bar):
     
     while (True):
         #Nick starts dialogue
-        action = input(f"Welcome to {bar.name}. What can I do for you? \n 1: Order a cocktail \n 2: Recommend cocktails \n 3: Create a cocktail\n")
+        action = input(f"\nWhat can I do for you?\n({bar}) \n\n 0: View order \n 1: Order a cocktail \n 2: Recommend cocktails \n 3: Create a cocktail\n\n")
+        
+        if int(action) == 0:
+            print(f"\n{bar!r}")
         
         if int(action) == 1:
             sorted_cocktails = {k: v for k, v in sorted(bar.cocktails.items(), key=lambda item: item[1])}
             cocktail_list = [ f"{index}: {str(cocktail)}" for (index, cocktail) in enumerate(sorted_cocktails.values()) ]
             order_number = input(f"Great! Here's a list of our cocktails. \n {cocktail_list} \n")
             bar.order(list(sorted_cocktails.keys())[int(order_number)])
-            orders_joined = ",".join([order.name for order in bar.myorder])
-            print(f"Excellent choice! Here are your orders: {orders_joined} \nYour total is: ${bar.tab()}")
+            print(bar)
             
         elif int(action) == 2:
             flavor_list = [ f"{index}: {flavor}" for (index, flavor) in enumerate(bar.get_flavors()) ]
