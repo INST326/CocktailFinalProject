@@ -21,10 +21,16 @@ class DataAnalysis:
         self.ingredients = pd.read_csv(ingredients_file)# reads the csv
 
     def menu(self):
-        """This method organizes and displays a menu of cocktails and their prices.
+        """This method organizes and prints a menu of cocktails and their prices.
         
         
-        
+        Side effect:
+            prints the dataframe
+                
+        Expect two mandatory arguments:
+            ingredients_filepth: a path to a file containing ingredients data
+            cocktails_filepth: a path to a file containing cocktails data
+
         """
         self.cocktails.columns = ["Drink_name", "Ingredients", "Price"]# renamed the 3 columns
         self.cocktails.loc[-1] = ['Old Fashioned','whiskey,angostura bitters,water,simple syrup','29']# adds the row I had to replace
@@ -35,6 +41,17 @@ class DataAnalysis:
         print(cocktails_and_price)
         
     def amount_of_ingredients(self):
+        """
+        Counts the number of ingredients in each category.
+
+        Side effect:
+            Prints the dataframe
+            
+        Expect two mandatory arguments:
+            ingredients_filepth: a path to a file containing ingredients data
+            cocktails_filepth: a path to a file containing cocktails data
+
+    """
         self.ingredients = pd.read_csv("ingredients.csv")
         self.ingredients.columns = ["Ingredient", "Price", "Type"]# renamed the top columns
         self.ingredients.loc[-1] =  ['whiskey',4,'smokey']# added the one I renamed back
@@ -42,19 +59,52 @@ class DataAnalysis:
         print(type_and_amount)
         
     def top_shelf_drinks(self): 
+        """
+        Finds the 5 most expensive drinks.
+        
+        Side effect:
+            Prints the dataframe
+
+        Expect two mandatory arguments:
+            ingredients_filepth: a path to a file containing ingredients data
+            cocktails_filepth: a path to a file containing cocktails data
+
+        """
         top_shelf = self.cocktails.nlargest(5, 'Price')
         print(top_shelf)    
         
-    def bottom_shelf_drinks(self): 
+    def bottom_shelf_drinks(self):
+        """
+        Finds the 5 least expensive drinks.
+
+        Side effect:
+            Prints the dataframe
+
+        Expect two mandatory arguments:
+            ingredients_filepth: a path to a file containing ingredients data
+            cocktails_filepth: a path to a file containing cocktails data
+
+        """
         bottom_shelf = self.cocktails.nsmallest(5,"Price")
         print(bottom_shelf)
         
     def flavor_graph(self):
+        """  Generates a bar graph showing the number of ingredients in each category.
+
+        Side effect:
+            Displays the bar graph
+
+        """
         type_and_amount = self.ingredients.value_counts("Type").to_frame("Amount").reset_index(0)# I counted the type of ingredients and added them to amount and reordered the numbers
         sns.set_palette([ "black", "#34495e"])# changed the style of seaborn to look better
         type_and_amount.plot(kind='bar', x='Type', y='Amount')# made the bar plot
           
     def cocktail_graph(self):
+        """ Generates a bar graph showing the price of each cocktail.
+        
+        Side effect:
+            Displays the bar graph
+        """ 
         cocktails_and_price = self.cocktails.loc[:, ['Drink_name', 'Price']].sort_values('Price', ascending=False)# decending
         cocktails_and_price.plot(kind='bar', x='Drink_name', y='Price')
 
@@ -248,11 +298,15 @@ class Bar:
     
         Returns:
             float: The sum of all the drinks ordered.
-        """
-        return sum(i.price() for i in self.myorder)
-
+        """    
+        return sum(i.price() for i in self.myorder)   
     
     def get_flavors(self):
+        """Get's all the possible flavors from menu
+
+        Returns:
+            list (str): List of flavors
+        """
         flavors = []
         for ingredient in self.ingr.values():
             if ingredient.flavor not in flavors:
