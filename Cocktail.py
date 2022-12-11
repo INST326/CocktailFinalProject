@@ -293,10 +293,21 @@ class Bar:
     
         Returns:
             float: The sum of all the drinks ordered.
-        """       
+        """    
+        return sum(i.price() for i in self.myorder)   
     
     def get_flavors(self):
-            pass
+        """Get's all the possible flavors from menu
+
+        Returns:
+            list (str): List of flavors
+        """
+        flavors = []
+        for ingredient in self.ingr.values():
+            if ingredient.flavor not in flavors:
+                flavors.append(ingredient.flavor)
+        
+        return flavors
     
     def __str__():
         """  magic method that returns informal rep of bar
