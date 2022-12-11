@@ -281,8 +281,10 @@ class Bar:
             for line in f:
                 if "cocktails" in filepath:
                     regex = r"(?P<Name>[^,]+),[\"](?P<Ingredients>[^\"]+)[\"],(?P<Strength>[\d.]+)"
+                    
                     match = re.search(regex, line)
                     name = match.group("Name")
+                    name = name.replace('\ufeff', '')
                     ingredients = match.group("Ingredients")
                     strength = match.group("Strength")
                     ingredients_split = ingredients.split(",")
@@ -293,6 +295,7 @@ class Bar:
                     regex = r"(?P<Name>[^,]+),(?P<Price>[\d.]+),(?P<Flavor>[a-zA-Z]+)"
                     match = re.search(regex, line)
                     name, price, flavor = match.groups()
+                    name = name.replace('\ufeff', '')
                     self.ingr[name] = Ingredient(name, int(price), flavor)
                                             
     def order(self, order):
