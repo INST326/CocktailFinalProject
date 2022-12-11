@@ -23,7 +23,6 @@ class DataAnalysis:
     def menu(self):
         """This method organizes and prints a menu of cocktails and their prices.
         
-        
         Side effect:
             prints the dataframe
                 
