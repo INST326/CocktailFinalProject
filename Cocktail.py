@@ -2,7 +2,7 @@ import re
 import pandas as pd
 import seaborn as sns
 from argparse import ArgumentParser
-
+import sys
 class DataAnalysis:
     """ A class that that gives us data analysis from our cocktail and ingredient files.
   
@@ -208,7 +208,7 @@ class Cocktail:
             bool: is the cocktails price less than other
         """
         
-        pass
+        return self.price() < other.price()
 
 class Bar:
     """Gathers the Cocktails and Ingredients classes to be able to recommend
@@ -235,7 +235,12 @@ class Bar:
                 ingr(dict): ingredients in the bar
                 cocktails(dict): cocktails in the bar
                 myorder(list): list of ordered cocktails
-        """  
+        """
+        
+        self.name = name
+        self.ingr = {}
+        self.cocktails = {}
+        self.myorder = []
     
     def create_cocktail(self, name, ingredients):
         """ Adds a new cocktail to the bar.
@@ -253,6 +258,16 @@ class Bar:
         Returns:
             list: The cocktails of the cocktails that it can recommend
         """       
+        recommend = []
+        
+        for cocktail in self.cocktails.values():
+            if len(recommend) > 3:
+                break
+            
+            if flavor in cocktail.flavors():
+                recommend.append(cocktail)
+
+        return recommend
     
     def load_data(self, filepath):
         """ loads ingredients from file into bar.
@@ -262,23 +277,23 @@ class Bar:
                 Adds ingredients to self.ingr
         """
         
-        #Bohan add with statement here
-        
-        if "cocktails" in filepath:
-            regex = r"(?P<Name>[^,]+),[\"](?P<Ingredients>[^\"]+)[\"],(?P<Strength>[\d.]+)"
-            match = re.search(regex, line)
-            name = match.group("Name")
-            ingredients = match.group("Ingredients")
-            strength = match.group("Strength")
-            ingredients_split = ingredients.split(",")
-            ingr_list = [self.ingr[ingr_iter] for ingr_iter in ingredients_split]
-            self.cocktails[name] = Cocktail(name, ingr_list, float(int(strength) * 0.01))
-            
-        elif "ingredients" in filepath:
-            regex = r"(?P<Name>[^,]+),(?P<Price>[\d.]+),(?P<Flavor>[a-zA-Z]+)"
-            match = re.search(regex, line)
-            name, price, flavor = match.groups()
-            self.ingr[name] = Ingredient(name, int(price), flavor)
+        with open(filepath, "r", encoding="utf-8") as f:
+            for line in f:
+                if "cocktails" in filepath:
+                    regex = r"(?P<Name>[^,]+),[\"](?P<Ingredients>[^\"]+)[\"],(?P<Strength>[\d.]+)"
+                    match = re.search(regex, line)
+                    name = match.group("Name")
+                    ingredients = match.group("Ingredients")
+                    strength = match.group("Strength")
+                    ingredients_split = ingredients.split(",")
+                    ingr_list = [self.ingr[ingr_iter] for ingr_iter in ingredients_split]
+                    self.cocktails[name] = Cocktail(name, ingr_list, float(int(strength) * 0.01))
+                    
+                elif "ingredients" in filepath:
+                    regex = r"(?P<Name>[^,]+),(?P<Price>[\d.]+),(?P<Flavor>[a-zA-Z]+)"
+                    match = re.search(regex, line)
+                    name, price, flavor = match.groups()
+                    self.ingr[name] = Ingredient(name, int(price), flavor)
                                             
     def order(self, order):
         """ Creates an order of the cocktails served.
@@ -286,6 +301,11 @@ class Bar:
         Args:
             cocktail_name (str): Name of the cocktail served.
         """
+        if isinstance(order, int):
+            order_cocktail = list(self.cocktails.keys())[order]
+            self.myorder.append(self.cocktails[order_cocktail])
+        elif isinstance(order, str):
+            self.myorder.append(self.cocktails[order])
         
     def tab(self):
         """Created a tab for the user to see how much everything will cost.
@@ -308,15 +328,24 @@ class Bar:
         
         return flavors
     
-    def __str__():
+    def __str__(self):
         """  magic method that returns informal rep of bar
+
+            Returns:
+                (str): Number of drinks ordered and the tab.
         """
-        pass
+        return f"You have ordered " \
+               f"{0 if len(self.myorder) == 0 else len(self.myorder)} drink(s)"\
+               f" at {self.name}" \
+               f" and the tab is ${self.tab()}."
     
-    def __repr__():
+    def __repr__(self):
         """ magic method that returns formal rep of bar
+
+            Returns:
+                (str): list of cocktails in informal form or "Nothing!"
         """
-        pass
+        return f"You have ordered: {[str(cocktail) for cocktail in self.myorder] if len(self.myorder) > 0 else 'Nothing!'}"
 
 def handle_dialogue(bar):
     """Handle the input dialogue for user to interact with Bar object
@@ -330,15 +359,17 @@ def handle_dialogue(bar):
     
     while (True):
         #Nick starts dialogue
-        action = input(f"Welcome to {bar.name}. What can I do for you? \n 1: Order a cocktail \n 2: Recommend cocktails \n 3: Create a cocktail\n")
+        action = input(f"\nWhat can I do for you?\n({bar}) \n\n 0: View order \n 1: Order a cocktail \n 2: Recommend cocktails \n 3: Create a cocktail\n\n")
+        
+        if int(action) == 0:
+            print(f"\n{bar!r}")
         
         if int(action) == 1:
             sorted_cocktails = {k: v for k, v in sorted(bar.cocktails.items(), key=lambda item: item[1])}
             cocktail_list = [ f"{index}: {str(cocktail)}" for (index, cocktail) in enumerate(sorted_cocktails.values()) ]
             order_number = input(f"Great! Here's a list of our cocktails. \n {cocktail_list} \n")
             bar.order(list(sorted_cocktails.keys())[int(order_number)])
-            orders_joined = ",".join([order.name for order in bar.myorder])
-            print(f"Excellent choice! Here are your orders: {orders_joined} \nYour total is: ${bar.tab()}")
+            print(bar)
             
         elif int(action) == 2:
             flavor_list = [ f"{index}: {flavor}" for (index, flavor) in enumerate(bar.get_flavors()) ]
