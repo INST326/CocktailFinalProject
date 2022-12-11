@@ -159,7 +159,7 @@ class Cocktail:
             bool: is the cocktails price less than other
         """
         
-        pass
+        return self.price() < other.price()
 
 class Bar:
     """Gathers the Cocktails and Ingredients classes to be able to recommend
@@ -213,23 +213,23 @@ class Bar:
                 Adds ingredients to self.ingr
         """
         
-        #Bohan add with statement here
-        
-        if "cocktails" in filepath:
-            regex = r"(?P<Name>[^,]+),[\"](?P<Ingredients>[^\"]+)[\"],(?P<Strength>[\d.]+)"
-            match = re.search(regex, line)
-            name = match.group("Name")
-            ingredients = match.group("Ingredients")
-            strength = match.group("Strength")
-            ingredients_split = ingredients.split(",")
-            ingr_list = [self.ingr[ingr_iter] for ingr_iter in ingredients_split]
-            self.cocktails[name] = Cocktail(name, ingr_list, float(int(strength) * 0.01))
-            
-        elif "ingredients" in filepath:
-            regex = r"(?P<Name>[^,]+),(?P<Price>[\d.]+),(?P<Flavor>[a-zA-Z]+)"
-            match = re.search(regex, line)
-            name, price, flavor = match.groups()
-            self.ingr[name] = Ingredient(name, int(price), flavor)
+        with open(filepath, "r", encoding="utf-8") as f:
+            for line in f:
+                if "cocktails" in filepath:
+                    regex = r"(?P<Name>[^,]+),[\"](?P<Ingredients>[^\"]+)[\"],(?P<Strength>[\d.]+)"
+                    match = re.search(regex, line)
+                    name = match.group("Name")
+                    ingredients = match.group("Ingredients")
+                    strength = match.group("Strength")
+                    ingredients_split = ingredients.split(",")
+                    ingr_list = [self.ingr[ingr_iter] for ingr_iter in ingredients_split]
+                    self.cocktails[name] = Cocktail(name, ingr_list, float(int(strength) * 0.01))
+                    
+                elif "ingredients" in filepath:
+                    regex = r"(?P<Name>[^,]+),(?P<Price>[\d.]+),(?P<Flavor>[a-zA-Z]+)"
+                    match = re.search(regex, line)
+                    name, price, flavor = match.groups()
+                    self.ingr[name] = Ingredient(name, int(price), flavor)
                                             
     def order(self, order):
         """ Creates an order of the cocktails served.
@@ -237,26 +237,47 @@ class Bar:
         Args:
             cocktail_name (str): Name of the cocktail served.
         """
+        if isinstance(order, int):
+            order_cocktail = list(self.cocktails.keys())[order]
+            self.myorder.append(self.cocktails[order_cocktail])
+        elif isinstance(order, str):
+            self.myorder.append(self.cocktails[order])
         
     def tab(self):
         """Created a tab for the user to see how much everything will cost.
     
         Returns:
             float: The sum of all the drinks ordered.
-        """       
+        """
+        return sum(i.price() for i in self.myorder)
+
     
     def get_flavors(self):
-            pass
+        flavors = []
+        for ingredient in self.ingr.values():
+            if ingredient.flavor not in flavors:
+                flavors.append(ingredient.flavor)
+        
+        return flavors
     
-    def __str__():
+    def __str__(self):
         """  magic method that returns informal rep of bar
+
+            Returns:
+                (str): Number of drinks ordered and the tab.
         """
-        pass
+        return f"You have ordered " \
+               f"{0 if len(self.myorder) == 0 else len(self.myorder)} drink(s)"\
+               f" at {self.name}" \
+               f" and the tab is ${self.tab()}."
     
-    def __repr__():
+    def __repr__(self):
         """ magic method that returns formal rep of bar
+
+            Returns:
+                (str): list of cocktails in informal form or "Nothing!"
         """
-        pass
+        return f"You have ordered: {[str(cocktail) for cocktail in self.myorder] if len(self.myorder) > 0 else 'Nothing!'}"
 
 def handle_dialogue(bar):
     """Handle the input dialogue for user to interact with Bar object
