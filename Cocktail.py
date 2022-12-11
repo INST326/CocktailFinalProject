@@ -2,7 +2,7 @@ import re
 import pandas as pd
 import seaborn as sns
 from argparse import ArgumentParser
-
+import sys
 class DataAnalysis:
     """ A class that that gives us data analysis from our cocktail and ingredient files.
   
@@ -236,7 +236,12 @@ class Bar:
                 ingr(dict): ingredients in the bar
                 cocktails(dict): cocktails in the bar
                 myorder(list): list of ordered cocktails
-        """  
+        """
+        
+        self.name = name
+        self.ingr = {}
+        self.cocktails = {}
+        self.myorder = []
     
     def create_cocktail(self, name, ingredients):
         """ Adds a new cocktail to the bar.
@@ -254,6 +259,16 @@ class Bar:
         Returns:
             list: The cocktails of the cocktails that it can recommend
         """       
+        recommend = []
+        
+        for cocktail in self.cocktails.values():
+            if len(recommend) > 3:
+                break
+            
+            if flavor in cocktail.flavors():
+                recommend.append(cocktail)
+
+        return recommend
     
     def load_data(self, filepath):
         """ loads ingredients from file into bar.
