@@ -3,6 +3,7 @@ import pandas as pd
 import seaborn as sns
 from argparse import ArgumentParser
 import sys
+import matplotlib.pyplot as plt
 class DataAnalysis:
     """ A class that that gives us data analysis from our cocktail and ingredient files.
   
@@ -17,7 +18,14 @@ class DataAnalysis:
            cocktails_file (pandas dataframe): csv file of the cocktails dataframe
            cocktails_file (pandas dataframe): csv file of the ingredients dataframe
         """
+        #cocktails
         self.cocktails = pd.read_csv(cocktails_file)# reads the csv
+        self.cocktails.columns = ["Drink_name", "Ingredients", "Price"]# renamed the 3 columns
+        self.cocktails.loc[-1] = ['Old Fashioned','whiskey,angostura bitters,water,simple syrup','29']# adds the row I had to replace
+        
+        #ingrediesnts
+        self.ingredients.columns = ["Ingredient", "Price", "Type"]# renamed the top columns
+        self.ingredients.loc[-1] =  ['whiskey',4,'smokey']# added the one I renamed back
         self.ingredients = pd.read_csv(ingredients_file)# reads the csv
 
     def menu(self):
@@ -31,8 +39,7 @@ class DataAnalysis:
             cocktails_filepth: a path to a file containing cocktails data
 
         """
-        self.cocktails.columns = ["Drink_name", "Ingredients", "Price"]# renamed the 3 columns
-        self.cocktails.loc[-1] = ['Old Fashioned','whiskey,angostura bitters,water,simple syrup','29']# adds the row I had to replace
+       
         change_to_num = self.cocktails.loc[:, "Price"]## separated to be able to change the rows to ints
         change_to_num = change_to_num.apply(pd.to_numeric, errors='coerce')## changed rows to ints
         self.cocktails.loc[:,"Price"] = change_to_num ## replaced the values
@@ -51,9 +58,7 @@ class DataAnalysis:
             cocktails_filepth: a path to a file containing cocktails data
 
     """
-        self.ingredients = pd.read_csv("ingredients.csv")
-        self.ingredients.columns = ["Ingredient", "Price", "Type"]# renamed the top columns
-        self.ingredients.loc[-1] =  ['whiskey',4,'smokey']# added the one I renamed back
+
         type_and_amount = self.ingredients.value_counts("Type").to_frame("Amount").reset_index(0)# I counted the type of ingredients and added them to amount and reordered the numbers
         print(type_and_amount)
         
@@ -70,7 +75,7 @@ class DataAnalysis:
 
         """
         top_shelf = self.cocktails.nlargest(5, 'Price')
-        print(top_shelf)    
+        print(top_shelf)  
         
     def bottom_shelf_drinks(self):
         """
@@ -97,6 +102,7 @@ class DataAnalysis:
         type_and_amount = self.ingredients.value_counts("Type").to_frame("Amount").reset_index(0)# I counted the type of ingredients and added them to amount and reordered the numbers
         sns.set_palette([ "black", "#34495e"])# changed the style of seaborn to look better
         type_and_amount.plot(kind='bar', x='Type', y='Amount')# made the bar plot
+        plt.show()
           
     def cocktail_graph(self):
         """ Generates a bar graph showing the price of each cocktail.
@@ -106,6 +112,7 @@ class DataAnalysis:
         """ 
         cocktails_and_price = self.cocktails.loc[:, ['Drink_name', 'Price']].sort_values('Price', ascending=False)# decending
         cocktails_and_price.plot(kind='bar', x='Drink_name', y='Price')
+        plt.show()
 
 class Ingredient:
     """ A class that sets the name, price, and flavor of the ingredients.
