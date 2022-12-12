@@ -18,15 +18,16 @@ class DataAnalysis:
            cocktails_file (pandas dataframe): csv file of the cocktails dataframe
            cocktails_file (pandas dataframe): csv file of the ingredients dataframe
         """
+        #Cocktails DF setup
         #cocktails
         self.cocktails = pd.read_csv(cocktails_file)# reads the csv
         self.cocktails.columns = ["Drink_name", "Ingredients", "Price"]# renamed the 3 columns
-        self.cocktails.loc[-1] = ['Old Fashioned','whiskey,angostura bitters,water,simple syrup','29']# adds the row I had to replace
+        self.cocktails.loc[-1] = ['Old Fashioned','whiskey,angostura bitters,water,simple syrup',29]# adds the row I had to replace
         
         #ingrediesnts
+        self.ingredients = pd.read_csv(ingredients_file)# reads the csv
         self.ingredients.columns = ["Ingredient", "Price", "Type"]# renamed the top columns
         self.ingredients.loc[-1] =  ['whiskey',4,'smokey']# added the one I renamed back
-        self.ingredients = pd.read_csv(ingredients_file)# reads the csv
 
     def menu(self):
         """This method organizes and prints a menu of cocktails and their prices.
@@ -180,14 +181,7 @@ class Cocktail:
         Returns:
             set: The flavors of the cocktails.
         """       
-        return {i.flavor for i in self.ingredients}
-    
-    def ingredients_name(self):
-        """Returns the ingredients name in the cocktails.
-        Returns:
-            set: the ingredients names of the cocktails.
-        """  
-        pass    
+        return {i.flavor for i in self.ingredients} 
     
     def __str__(self) -> str:
         """Returns the string representation of the cocktails.
@@ -255,6 +249,8 @@ class Bar:
             name(str): Name of cocktail
             ingredients(set): Ingredients of cocktail
         """
+        new_cocktail = Cocktail(name, ingredients)
+        self.cocktails[name] = new_cocktail
     
     def recommend_cocktails(self, flavor):
         """Returns the recommended cocktails based on the flavor.
@@ -357,7 +353,7 @@ class Bar:
         """
         return f"You have ordered: {[str(cocktail) for cocktail in self.myorder] if len(self.myorder) > 0 else 'Nothing!'}"
 
-def handle_dialogue(bar):
+def handle_dialogue(bar, cocktails_filepath=None, ingr_filepath=None):
     """Handle the input dialogue for user to interact with Bar object
 
     Args:
@@ -369,7 +365,7 @@ def handle_dialogue(bar):
     
     while (True):
         #Nick starts dialogue
-        action = input(f"\nWhat can I do for you?\n({bar}) \n\n 0: View order \n 1: Order a cocktail \n 2: Recommend cocktails \n 3: Create a cocktail\n\n")
+        action = input(f"\nWhat can I do for you?\n({bar}) \n\n 0: View order \n 1: Order a cocktail \n 2: Recommend cocktails \n 3: Create a cocktail\n 4: Get bar data\n")
         
         if int(action) == 0:
             print(f"\n{bar!r}")
@@ -397,6 +393,16 @@ def handle_dialogue(bar):
             ingrs = [list(bar.ingr.values())[int(index)] for index in selected_ingrs]
             bar.create_cocktail(cocktail_name, ingrs)
             print(f"Your cocktail has been added to the menu!")
+        
+        elif int(action) == 4:
+            data_analysis = DataAnalysis(cocktails_filepath, ingr_filepath)
+            data_options = input(f"\n 0: Menu table \n 1: Cocktails graph \n 2: Ingredients Graph \n")
+            if int(data_options) == 0:
+                data_analysis.menu()
+            elif int(data_options) == 1:
+                data_analysis.cocktail_graph()
+            elif int(data_options) == 2:
+                data_analysis.flavor_graph()
  
 def parse_args(arglist):
    """ Parse command-line arguments.
@@ -428,7 +434,7 @@ def main(cocktails_filepth, ingredients_filepth, bar_name):
     new_bar = Bar(bar_name)
     new_bar.load_data(ingredients_filepth)
     new_bar.load_data(cocktails_filepth)
-    handle_dialogue(new_bar)
+    handle_dialogue(new_bar, cocktails_filepth, ingredients_filepth)
 
 if __name__ == "__main__":
     args = parse_args(sys.argv[1:])
