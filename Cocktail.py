@@ -137,6 +137,7 @@ class Ingredient:
            name (str): name of ingredient
            price (float): price of ingredient
            flavor (str): flavor of ingredient
+    
     """   
     def __init__(self, name, price, flavor) -> None:
         """Initializes the ingredients class.
@@ -167,6 +168,7 @@ class Cocktail:
             add (other): magic method adds two cocktail ingredients
             sub (other): magic method to get difference
                                 between two cocktails ingredients
+    Author: Jay
     """
  
     def __init__(self, name, ingredients, strength=None) -> None:
@@ -315,7 +317,8 @@ class Bar:
             
             Side effect:
                 Adds ingredients to self.ingr
-                
+
+        Author: Jay
 
         """
         
@@ -345,6 +348,8 @@ class Bar:
     
         Args:
             cocktail_name (str): Name of the cocktail served.
+        Author: Jay
+    
         """
         if isinstance(order, int):
             order_cocktail = list(self.cocktails.keys())[order]
