@@ -5,11 +5,14 @@ from argparse import ArgumentParser
 import sys
 import matplotlib.pyplot as plt
 class DataAnalysis:
+
     """ A class that that gives us data analysis from our cocktail and ingredient files.
   
        Attributes:
            cocktails_file (pandas dataframe): csv file of the cocktails dataframe
            cocktails_file (pandas dataframe): csv file of the ingredients dataframe
+           
+        Author:Avram Baicu
     """ 
     def __init__(self, cocktails_file, ingredients_file):
         """Initializes the DataAnalysis class.
@@ -17,6 +20,9 @@ class DataAnalysis:
         Args:
            cocktails_file (pandas dataframe): csv file of the cocktails dataframe
            cocktails_file (pandas dataframe): csv file of the ingredients dataframe
+           
+        Author:Avram Baicu
+
         """
         #cocktails DF setup
         self.cocktails = pd.read_csv(cocktails_file)# reads the csv
@@ -37,6 +43,8 @@ class DataAnalysis:
         Expect two mandatory arguments:
             ingredients_filepth: a path to a file containing ingredients data
             cocktails_filepth: a path to a file containing cocktails data
+            
+        Author:Avram Baicu
 
         """
        
@@ -56,6 +64,8 @@ class DataAnalysis:
         Expect two mandatory arguments:
             ingredients_filepth: a path to a file containing ingredients data
             cocktails_filepth: a path to a file containing cocktails data
+            
+        Author:Avram Baicu
 
     """
 
@@ -73,6 +83,7 @@ class DataAnalysis:
             ingredients_filepth: a path to a file containing ingredients data
             cocktails_filepth: a path to a file containing cocktails data
 
+        Author:Avram Baicu
         """
         top_shelf = self.cocktails.nlargest(5, 'Price')
         print(top_shelf)  
@@ -88,6 +99,7 @@ class DataAnalysis:
             ingredients_filepth: a path to a file containing ingredients data
             cocktails_filepth: a path to a file containing cocktails data
 
+        Author:Avram Baicu
         """
         bottom_shelf = self.cocktails.nsmallest(5,"Price")
         print(bottom_shelf)
@@ -97,6 +109,8 @@ class DataAnalysis:
 
         Side effect:
             Displays the bar graph
+
+        Author:Avram Baicu
 
         """
         type_and_amount = self.ingredients.value_counts("Type").to_frame("Amount").reset_index(0)# I counted the type of ingredients and added them to amount and reordered the numbers
@@ -109,6 +123,8 @@ class DataAnalysis:
         
         Side effect:
             Displays the bar graph
+
+        Author:Avram Baicu
         """ 
         cocktails_and_price = self.cocktails.loc[:, ['Drink_name', 'Price']].sort_values('Price', ascending=False)# decending
         cocktails_and_price.plot(kind='bar', x='Drink_name', y='Price')
@@ -183,6 +199,8 @@ class Cocktail:
         """Returns the price of the cocktail.
         Returns:
             float: The total cost
+        
+        Author:Avram Baicu
         """    
         return sum(i.price for i in self.ingredients)
     
@@ -297,6 +315,8 @@ class Bar:
             
             Side effect:
                 Adds ingredients to self.ingr
+                
+
         """
         
         with open(filepath, "r", encoding="utf-8") as f:
@@ -338,8 +358,6 @@ class Bar:
     
         Returns:
             float: The sum of all the drinks ordered.
-        
-        Author: Kevin
         """    
         # Utilize sum function and generator expression to get prices of orders
         return sum(i.price() for i in self.myorder)   
@@ -351,6 +369,7 @@ class Bar:
         Returns:
             list (str): List of flavors
         Author: Kevin
+            
         """
         
         flavors = []
