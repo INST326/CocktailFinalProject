@@ -18,15 +18,14 @@ class DataAnalysis:
            cocktails_file (pandas dataframe): csv file of the cocktails dataframe
            cocktails_file (pandas dataframe): csv file of the ingredients dataframe
         """
-        #Cocktails DF setup
-        #cocktails
+        #cocktails DF setup
         self.cocktails = pd.read_csv(cocktails_file)# reads the csv
         self.cocktails.columns = ["Drink_name", "Ingredients", "Price"]# renamed the 3 columns
-        self.cocktails.loc[-1] = ['Old Fashioned','whiskey,angostura bitters,water,simple syrup',29]# adds the row I had to replace
+        self.cocktails.loc[-1] = ['Old Fashioned', 'whiskey,angostura bitters,water,simple syrup', 29]# adds the row I had to replace
         
         #ingrediesnts
         self.ingredients = pd.read_csv(ingredients_file)# reads the csv
-        self.ingredients.columns = ["Ingredient", "Price", "Type"]# renamed the top columns
+        self.ingredients.columns = ["Ingredient", "Price", "Type"] # renamed the top columns
         self.ingredients.loc[-1] =  ['whiskey',4,'smokey']# added the one I renamed back
 
     def menu(self):
@@ -131,6 +130,7 @@ class Ingredient:
             price (float): Price of the ingredients.
             flavor (str): Flavor type of the ingredients.
         """
+        # Define attributes
         self.name = name
         self.price = price
         self.flavor = flavor
@@ -154,6 +154,16 @@ class Cocktail:
     """
  
     def __init__(self, name, ingredients, strength=None) -> None:
+        """Initializes the Cocktail class.
+ 
+        Args:
+            name (str): Name of the cocktail.
+            ingredients (set): Set of Ingredient objects.
+            strength (float): Strength (abv) of the cocktail.
+        
+        Author: Kevin
+        """
+        # Define attributes
         self.name = name
         self.ingredients = ingredients
         self.strength = strength
@@ -180,8 +190,10 @@ class Cocktail:
         """Returns the flavors of the cocktails.
         Returns:
             set: The flavors of the cocktails.
-        """       
-        return {i.flavor for i in self.ingredients} 
+        Author: Kevin
+        """   
+        # Utilize generator expression to get set of flavors
+        return {i.flavor for i in self.ingredients}
     
     def __str__(self) -> str:
         """Returns the string representation of the cocktails.
@@ -199,7 +211,6 @@ class Cocktail:
         """    
         
         return f"Cocktail(${self.name!r})"
-  
     
     def __lt__(self, other):
         """Check less than for sorting
@@ -236,8 +247,9 @@ class Bar:
                 ingr(dict): ingredients in the bar
                 cocktails(dict): cocktails in the bar
                 myorder(list): list of ordered cocktails
+            Author: Kevin
         """
-        
+        # Define attributes
         self.name = name
         self.ingr = {}
         self.cocktails = {}
@@ -253,7 +265,9 @@ class Bar:
         self.cocktails[name] = new_cocktail
     
     def recommend_cocktails(self, flavor):
-        """Returns the recommended cocktails based on the flavor.
+        """Kevin
+            
+           Returns the recommended cocktails based on the flavor.
     
         Args:
             flavor (str): The flavor of the cockatils
@@ -261,12 +275,17 @@ class Bar:
         Returns:
             list: The cocktails of the cocktails that it can recommend
         """       
+        
         recommend = []
         
+        # Iterate through each cocktail object
         for cocktail in self.cocktails.values():
+            
             if len(recommend) > 3:
+                #Exit loop if 3 are found
                 break
             
+            #Check if flavor being searched is in the cocktail's flavors
             if flavor in cocktail.flavors():
                 recommend.append(cocktail)
 
@@ -314,19 +333,26 @@ class Bar:
             self.myorder.append(self.cocktails[order])
         
     def tab(self):
-        """Created a tab for the user to see how much everything will cost.
+        """
+           Created a tab for the user to see how much everything will cost.
     
         Returns:
             float: The sum of all the drinks ordered.
+        
+        Author: Kevin
         """    
+        # Utilize sum function and generator expression to get prices of orders
         return sum(i.price() for i in self.myorder)   
     
     def get_flavors(self):
-        """Get's all the possible flavors from menu
+        """
+            Get's all the possible flavors from menu for input dialogue
 
         Returns:
             list (str): List of flavors
+        Author: Kevin
         """
+        
         flavors = []
         for ingredient in self.ingr.values():
             if ingredient.flavor not in flavors:
@@ -361,6 +387,8 @@ def handle_dialogue(bar, cocktails_filepath=None, ingr_filepath=None):
         
     Side effects:
         Printing to stout
+    
+    Author: Kevin
     """
     
     while (True):
@@ -430,6 +458,8 @@ def main(cocktails_filepth, ingredients_filepth, bar_name):
     Args:
         cocktails_filepth (str): string location of the cocktails.csv
         ingredients_filepth (str): string location of the ingredients.csv
+    
+    Author: Kevin
     """    
     new_bar = Bar(bar_name)
     new_bar.load_data(ingredients_filepth)
