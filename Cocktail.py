@@ -433,7 +433,8 @@ def handle_dialogue(bar, cocktails_filepath=None, ingr_filepath=None):
                 data_analysis.flavor_graph()
  
 def parse_args(arglist):
-   """ Parse command-line arguments.
+   """ 
+   Parse command-line arguments.
   
    Expect two mandatory arguments:
        - ingredients_filepth: a path to a file containing ingredients data
@@ -445,6 +446,8 @@ def parse_args(arglist):
   
    Returns:
        namespace: the parsed arguments, as a namespace.
+
+    Author: Jay
    """
    parser = ArgumentParser()
    parser.add_argument("ingredients_filepth", help="path to ingredients file")
