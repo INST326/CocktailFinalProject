@@ -195,6 +195,7 @@ class Cocktail:
         
         return Cocktail(f"{self.name} x {other.name}", 
         self.ingredients.union(other.ingredients))
+        #Nick
   
         
     def price(self) -> float:
@@ -219,18 +220,22 @@ class Cocktail:
         """Returns the string representation of the cocktails.
         Returns:
             str: String of the cocktails.
+            - Nick
         """     
           
         ingr_txt = ", ".join([ingr.name for ingr in self.ingredients])
         return f"{self.name} - ${self.price()}"
+        #Nick 
   
     def __repr__(self) -> str:
         """Returns the object representation of the string format for the cocktails.
         Returns:
             str: Returns the objects of the cocktails.
+            - Nick 
         """    
         
         return f"Cocktail(${self.name!r})"
+        #Nick
     
     def __lt__(self, other):
         """Check less than for sorting
@@ -416,9 +421,9 @@ def handle_dialogue(bar, cocktails_filepath=None, ingr_filepath=None):
     """
     
     while (True):
-        #Nick starts dialogue
         action = input(f"\nWhat can I do for you?\n({bar}) \n\n 0: View order \n 1: Order a cocktail \n 2: Recommend cocktails \n 3: Create a cocktail\n 4: Get bar data\n")
-        
+        #Nick 
+
         if int(action) == 0:
             print(f"\n{bar!r}")
         
